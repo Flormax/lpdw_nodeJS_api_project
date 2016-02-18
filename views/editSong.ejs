@@ -1,0 +1,10 @@
+<% include partials/header %>
+   <%if (err) {%>
+        <div style="color:red"><%=err%></div>
+        <hr/>
+   <%} %>
+   <form method="POST" action="/songs/<%= song._id%>?_method=put">
+        <% include _formSong %>
+        <input type="submit"/>
+   </form>
+<% include partials/footer %>
