@@ -1,26 +1,30 @@
 <% include partials/header %>
-<table>
+<table class="table table-striped">
+  <thead>
     <tr>
-        <th>Title</th>
-        <th>Album</th>
-        <th>Artist</th>
-        <th>Year</th>
-        <th>BPM</th>
+      <th>Title</th>
+      <th>Album</th>
+      <th>Artist</th>
+      <th>Year</th>
+      <th>BPM</th>
     </tr>
-    <% songs.forEach(function(song) {%>
-        <tr>
-            <td>
-                <a href="/songs/<%=song._id%>"><%=song.title%></a>
-            </td>
-            <td><%=song.album%></td>
-            <td><%=song.artist%></td>
-            <td>
-                <% if (song.year) { %><%=song.year%><% } %>
-            </td>
-            <td>
-                <% if (song.bpm) { %><%=song.bpm%><% } %>
-            </td>
-        </tr>
-    <% }) %>
+  </thead>
+  <tbody>
+  <% songs.forEach(function(song) {%>
+    <tr>
+      <td>
+        <a href="/songs/<%=song._id%>"><%=song.title%></a>
+      </td>
+      <td><%=song.album%></td>
+      <td><%=song.artist%></td>
+      <td>
+        <% if (song.year) { %><%=song.year%><% } %>
+      </td>
+      <td>
+        <% if (song.bpm) { %><%=song.bpm%><% } %>
+      </td>
+    </tr>
+  <% }) %>
+  </tbody>
 </table>
 <% include partials/footer %>
