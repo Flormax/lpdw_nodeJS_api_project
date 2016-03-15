@@ -1,0 +1,54 @@
+<% include partials/header %>
+    <h1>
+        <%=user.displayName%>'s profil
+        <% if(requested === -1)  {%>
+            <form method="POST" action="/friendRequests/send/<%= user._id%>">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default" value="&#9991 Friend request"/>
+                </div>
+            </form>
+        <% } else if(requested === 0) { %>
+            <form method="POST" action="/friendRequests/send/<%= user._id%>">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default" value="&#9991 Pending" disabled/>
+                </div>
+            </form>
+        <% } else { %>
+            <button type="button" class="btn btn-default" aria-label="Left Align" disabled>
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Friend
+            </button>
+        <% } %>
+    </h1>
+    <%=user.username%><br/>
+    <%=user.email%>
+    <hr/>
+    <h2>Favorites songs</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Album</th>
+          <th>Artist</th>
+          <th>Year</th>
+          <th>BPM</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% favorites.forEach(function(song) {%>
+        <tr>
+          <td>
+            <a href="/songs/<%=song._id%>"><%=song.title%></a>
+          </td>
+          <td><%=song.album%></td>
+          <td><%=song.artist%></td>
+          <td>
+            <% if (song.year) { %><%=song.year%><% } %>
+          </td>
+          <td>
+            <% if (song.bpm) { %><%=song.bpm%><% } %>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+<% include partials/footer %>

@@ -11,7 +11,6 @@ module.exports.songApiLocalStrategy = function() {
             .exec(function (err, user) {
                 if (err) { return done(err); }
                 if (!user) {
-                    console.log('Incorrect username.');
                     return done(null, false, { message: 'Incorrect username.' });
                 }
                 if (!bcrypt.compareSync(password, user.password)) {

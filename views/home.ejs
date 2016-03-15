@@ -1,0 +1,90 @@
+<% include partials/header %>
+<% if (friendReqs[0]) { %>
+    <h2>Friend requests pending</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>From</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+          <% for(var i =0; i<friendReqs.length; i++) { %>
+            <tr>
+              <td>
+                <a href="/users/<%=friendReqs[i].fromUser%>"><%=requesters[i].username%></a>
+              </td>
+              <td>
+                  <form method="POST" action="/friendRequests/accept/<%= friendReqs[i]._id%>?_method=put" class="form-horizontal" role="form">
+                      <div class="form-group">
+                          <input type="submit" class="btn btn-default" value="&#9745 Accept"/>
+                      </div>
+                  </form>
+                  <form method="POST" action="/friendRequests/decline/<%= friendReqs[i]._id%>?_method=put" class="form-horizontal" role="form">
+                      <div class="form-group">
+                          <input type="submit" class="btn btn-default" value="&#9746 Decline"/>
+                      </div>
+                  </form>
+              </td>
+            </tr>
+          <% } %>
+      </tbody>
+    </table>
+<% } %>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Frk'n Cie Top 5:</h2>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Artist</th>
+                  <th>Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <% songs.forEach(function(song) {%>
+                    <tr>
+                      <td>
+                        <a href="/songs/<%=song._id%>"><%=song.song.title%></a>
+                      </td>
+                      <td><%=song.song.artist%></td>
+                      <td>
+                          <% for(var i=0; i<Math.round(song.avgEval); i++) { %>
+                              <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                          <% }
+                          if(song.avgEval != 5){
+                              for(var i=Math.round(song.avgEval); i<5; i++) { %>
+                                  <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                              <% } %>
+                          <% } %>
+                      </td>
+                    </tr>
+                  <% }) %>
+              </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <h2>Frk'n Cie last registrations:</h2>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Registration date</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <% users.forEach(function(user) {%>
+                    <tr>
+                      <td><a href="/users/<%=user._id%>"><%=user.displayName%></a></td>
+                      <td><%=user.createdAt%></td>
+                    </tr>
+                  <% }) %>
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<% include partials/footer %>

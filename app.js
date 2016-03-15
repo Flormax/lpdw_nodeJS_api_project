@@ -12,6 +12,8 @@ var methodOverride = require('method-override');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var songs = require('./routes/songs');
+var evaluations = require('./routes/evaluations')
+var friendRequests = require('./routes/friendRequests')
 var signup = require('./routes/signup');
 var login = require('./routes/login');
 var database = require('./database');
@@ -26,7 +28,7 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true}));
 app.use(cookieParser());
 
 var sess = {
@@ -58,6 +60,7 @@ var verifyAuth = function(req, res, next) {
     if (req.isAuthenticated()) {
         res.locals.user_session = true;
         res.locals.user_admin = (req.user.username === 'admin');
+        res.locals.username = req.user.username;
         return next();
     }
     if (req.accepts('text/html')) {
@@ -74,6 +77,8 @@ app.use('/', routes);
 app.use('/login', login);
 app.use('/users', users);
 app.use('/songs', songs);
+app.use('/evaluations', evaluations);
+app.use('/friendRequests', friendRequests);
 app.use('/signup', signup);
 
 app.get('/logout', function(req, res){

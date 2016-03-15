@@ -1,16 +1,6 @@
 <% include partials/header %>
-<form action="/login" method="post">
-    <div>
-        <label>Username:</label>
-        <input type="text" name="username"/>
-    </div>
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password"/>
-    </div>
-    <div>
-        <input type="submit" value="Se connecter"/>
-    </div>
+<form action="/login" method="post" class="form-horizontal" role="form">
+    <% include _formLogin %>
+    <a href="/signup">Se registrer</a>
 </form>
-<a href="/signup">Se registrer</a>
 <% include partials/footer %>

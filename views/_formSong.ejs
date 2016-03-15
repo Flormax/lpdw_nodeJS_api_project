@@ -1,5 +1,35 @@
-    Titre:  <input type="text" id="title" name="title" value="<%=song.title%>"><br/>
-    Album:  <input type="text" id="album" name="album" value="<%=song.album%>"><br/>
-    Artist: <input type="text" id="artist" name="artist" value="<%=song.artist%>"><br/>
-    Year:   <input type="text" id="year" name="year" value="<%=song.year%>"><br/>
-    BPM:    <input type="text" id="bpm" name="bpm" value="<%=song.bpm%>"><br/>
+<div class="form-group">
+  <label for="title" class="control-label col-sm-2">Title</label>
+  <div class="col-sm-4">
+    <input class="form-control" id="title" type="text" name="title" value="<%=song.title%>">
+  </div>
+</div>
+<div class="form-group">
+  <label for="album" class="control-label col-sm-2">Album</label>
+  <div class="col-sm-4">
+    <input class="form-control" id="Album" type="text" name="album" value="<%=song.album%>">
+  </div>
+</div>
+<div class="form-group">
+  <label for="artist" class="control-label col-sm-2">Artist</label>
+  <div class="col-sm-4">
+    <input class="form-control" id="artist" type="text" name="artist" value="<%=song.artist%>">
+  </div>
+</div>
+<div class="form-group">
+  <label for="year" class="control-label col-sm-2">Year</label>
+  <div class="col-sm-4">
+    <input class="form-control" id="year" type="text" name="year" value="<%=song.year%>">
+  </div>
+</div>
+<div class="form-group">
+  <label for="bpm" class="control-label col-sm-2">BPM</label>
+  <div class="col-sm-4">
+    <input class="form-control" id="bpm" type="text" name="bpm" value="<%=song.bpm%>">
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-offset-2 col-sm-10">
+    <button type="submit" class="btn btn-default">Send</button>
+  </div>
+</div>

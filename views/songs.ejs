@@ -1,4 +1,10 @@
 <% include partials/header %>
+<form action="/songs/search" method="get" class="form-inline">
+  <% include _formSearchSong %>
+</form>
+
+<hr/>
+
 <table class="table table-striped">
   <thead>
     <tr>
@@ -10,6 +16,21 @@
     </tr>
   </thead>
   <tbody>
+  <% if (user_admin) { %>
+    <tr>
+      <td>
+        <a href="/songs/add">
+          <button type="button" class="btn btn-default" aria-label="Left Align">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          </button>
+        </a>
+      </td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  <% } %>
   <% songs.forEach(function(song) {%>
     <tr>
       <td>

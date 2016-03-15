@@ -1,0 +1,78 @@
+<% include partials/header %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Friends:</h2>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Displayname</th>
+                    <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% friends.forEach(function(friend) { %>
+                <tr>
+                  <td>
+                    <a href="/users/<%=friend._id%>"><%=friend.username%></a>
+                  </td>
+                  <td><%=friend.displayName%></td>
+                  <td><%=friend.email%></td>
+                </tr>
+              <% }) %>
+              </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <h2>All other users:</h2>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th></th>
+                    <th>Username</th>
+                    <th>Displayname</th>
+                    <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% users.forEach(function(user) {%>
+                <tr>
+                    <td>
+                        <form method="POST" action="/friendRequests/send/<%= user._id%>">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-default" value="&#9991 Friend request"/>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="/users/<%=user._id%>"><%=user.username%></a>
+                    </td>
+                    <td><%=user.displayName%></td>
+                    <td><%=user.email%></td>
+                </tr>
+              <% }) %>
+              <% requested_users.forEach(function(user) {%>
+                <tr>
+                    <td>
+                        <form method="POST" action="/friendRequests/send/<%= user._id%>">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-default" value="&#9991 pending" disabled/>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="/users/<%=user._id%>"><%=user.username%></a>
+                    </td>
+                    <td><%=user.displayName%></td>
+                    <td><%=user.email%></td>
+                </tr>
+              <% }) %>
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<% include partials/footer %>

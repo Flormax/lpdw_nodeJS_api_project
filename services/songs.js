@@ -19,6 +19,5 @@ exports.deleteAll = function() {
 };
 
 exports.updateSongById = function(songId, songToUpdate) {
-    // return Songs.updateAsync({_id: songId}, songToUpdate); // updates but doesn't return updated document
-    return Songs.findOneAndUpdateAsync({_id: songId}, songToUpdate, {new: true}); // https://github.com/Automattic/mongoose/issues/2756
+    return Songs.findOneAndUpdateAsync({_id: songId}, songToUpdate, {new: true});
 };

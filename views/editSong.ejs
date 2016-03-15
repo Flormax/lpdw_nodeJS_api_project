@@ -3,8 +3,7 @@
         <div style="color:red"><%=err%></div>
         <hr/>
    <%} %>
-   <form method="POST" action="/songs/<%= song._id%>?_method=put">
+   <form method="POST" action="/songs/<%= song._id%>?_method=put" class="form-horizontal" role="form">
         <% include _formSong %>
-        <input type="submit"/>
    </form>
 <% include partials/footer %>

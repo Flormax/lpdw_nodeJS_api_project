@@ -3,21 +3,7 @@
     <div style="color:red"><%=err%></div>
 <%} %>
 <hr/>
-<form action="/signup" method="post">
-    <div>
-        <label>Username:</label>
-        <input type="text" name="username"/>
-    </div>
-    <div>
-        <label>Display Name:</label>
-        <input type="text" name="displayName"/>
-    </div>
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password"/>
-    </div>
-    <div>
-        <input type="submit" value="S’inscrire"/>
-    </div>
+<form action="/signup" method="post" class="form-horizontal" role="form">
+    <% include _formSignup %>
 </form>
 <% include partials/footer %>

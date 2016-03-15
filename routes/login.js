@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
 
 router.post('/',
     passport.authenticate('local', {
-        successRedirect: '/songs',
+        successRedirect: '/',
         failureRedirect: '/login'
     })
 );

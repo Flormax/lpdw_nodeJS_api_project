@@ -1,0 +1,51 @@
+<% include partials/header %>
+    <h1>
+        Your account
+    </h1>
+    <%=user.displayName%>
+    <%=user.username%><br/>
+    <%=user.email%>
+    <hr/>
+    <h2>
+        Favorites songs
+        <form method="POST" action="/users/delAllFavorites?_method=put">
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="&#9760 Delete all"/>
+            </div>
+        </form>
+    </h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Album</th>
+            <th>Artist</th>
+            <th>Year</th>
+            <th>BPM</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% favorites.forEach(function(song) {%>
+        <tr>
+            <td>
+                <form method="POST" action="/users/delFavorite/<%= song._id%>?_method=put">
+                     <% include _formDelFavorite %>
+                </form>
+            </td>
+            <td>
+            <a href="/songs/<%=song._id%>"><%=song.title%></a>
+            </td>
+            <td><%=song.album%></td>
+            <td><%=song.artist%></td>
+            <td>
+            <% if (song.year) { %><%=song.year%><% } %>
+            </td>
+            <td>
+            <% if (song.bpm) { %><%=song.bpm%><% } %>
+            </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+<% include partials/footer %>

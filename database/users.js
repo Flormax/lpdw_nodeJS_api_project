@@ -1,12 +1,15 @@
 'use strict'
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var userSchema = mongoose.Schema({
     username: {type: String, required: true},
     password: {type: String, required: true, select: false},
     displayName: {type: String, required: true},
-    favoriteSongs: [String],
-    createdAt: {type: Date, 'default': Date.now}
+    email: {type: String, required: true},
+    favoriteSongs: [Schema.ObjectId],
+    createdAt: {type: Date, 'default': Date.now},
+    friends: [Schema.ObjectId]
 });
 
 module.exports = mongoose.model('user', userSchema);

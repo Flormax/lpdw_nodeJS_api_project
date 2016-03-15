@@ -6,14 +6,15 @@
         <span class="icon-bar"></span> <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Social Music</a>
+      <a class="navbar-brand" href="/">Frk'n Cie</a>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li id="home"><a href="/">Home</a></li>
-        <li id="about"><a href="/about">About</a></li>
         <% if (user_session) {%>
-          <li id="logout"><a href="/logout">Logout</a></li>
+          <li id="music"><a href="/songs">Music'tek</a></li>
+          <li id="users"><a href="/users">Social</a></li>
+          <li id="account"><a href="/users/me">Account</a></li>
+          <li id="logout"><a href="/logout">Logout (<%=username %>)</a></li>
         <%}%>
       </ul>
     </div>

@@ -2,6 +2,8 @@ var express = require('express');
 var _ = require('lodash');
 var router = express.Router();
 var SongService = require('../services/songs');
+var EvaluationService = require('../services/evaluations');
+var UserService = require('../services/users');
 
 var verifyIsAdmin = function(req, res, next) {
     if (req.isAuthenticated() && req.user.username === 'admin') {
@@ -30,7 +32,52 @@ router.get('/', function(req, res) {
     }
 });
 
-router.get('/add', function(req, res) {
+router.get('/search', function(req, res) {
+    if (req.accepts('text/html') || req.accepts('application/json')) {
+        //Formation de la requete
+        var by = req.query.by.toLowerCase()
+        var filter = req.query.filter.toLowerCase().trim()
+        switch(by) {
+            case "artist":
+                var filterby = {artist: filter}
+                break;
+            case "title":
+                var filterby = {title: filter}
+                break;
+            case "album":
+                var filterby = {album: filter}
+                break;
+            case "year":
+                var filterby = {year: filter}
+                break;
+            case "bpm":
+                var filterby = {bpm: filter}
+                break;
+            default:
+                res.status(400).send({err: filter + " is not a valid filter"});
+                return;
+        }
+        //Charge les chansons filtrées
+        SongService.find(filterby)
+            .then(function(songs) {
+                if (req.accepts('text/html')) {
+                    return res.render('songs', {songs: songs});
+                }
+                if (req.accepts('application/json')) {
+                    res.status(200).send(songs);
+                }
+            })
+            .catch(function(err) {
+                res.status(500).send(err);
+            })
+        ;
+    }
+    else {
+        res.status(406).send({err: 'Not valid type for asked ressource'});
+    }
+});
+
+router.get('/add', verifyIsAdmin, function(req, res) {
     var song = (req.session.song) ? req.session.song : {};
     var err = (req.session.err) ? req.session.err : null;
     if (req.accepts('text/html')) {
@@ -44,30 +91,57 @@ router.get('/add', function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
+    var songData = {};
     if (req.accepts('text/html') || req.accepts('application/json')) {
-        SongService.findOneByQuery({_id: req.params.id})
+        //Charge la chanson
+        return SongService.findOneByQuery({_id: req.params.id})
             .then(function(song) {
                 if (!song) {
                     res.status(404).send({err: 'No song found with id' + req.params.id});
                     return;
                 }
+                songData.fav = false;
+                songData.song = song;
+                return UserService.findOneByQuery({_id : req.user._id})
+            })
+            //Charge l'user courant et vérifi sa liste de favoris
+            .then(function(user) {
+                var i = 0;
+                while(i < user.favoriteSongs.length) {
+                    if (user.favoriteSongs[i] == req.params.id) {
+                        songData.fav = true;
+                    }
+                    i++;
+                }
+                return EvaluationService.findOneByQuery({song_id: req.params.id, username: req.user.username})
+            })
+            //Check si on à évalué la chanson ou non, adapte la réponse en fonction
+            .then(function(evaluation) {
+                songData.eval = (evaluation ? evaluation : null);
                 if (req.accepts('text/html')) {
-                    return res.render('song', {song: song});
+                    return res.render('song', {
+                        song: songData.song,
+                        username: req.user.username,
+                        fav: songData.fav,
+                        eval: songData.eval});
                 }
                 if (req.accepts('application/json')) {
-                    return res.send(200, song);
+                    return res.send(200, songData);
                 }
-            })
-            .catch(function(err) {
-                console.log(err);
+            }).catch(function(err) {
                 res.status(500).send(err);
-            })
-        ;
-    }
-    else {
+            });
+    } else {
         res.status(406).send({err: 'Not valid type for asked ressource'});
     }
 });
+
+router.post('/favorites/:id', function(req, res) {
+    SongService.addFavoritesToUser(req.user_id, req.params.id)
+        .then(function(song) {
+            return res.render('song', {song: song});
+        })
+})
 
 router.get('/artist/:artist', function(req, res) {
     SongService.find({artist: {$regex: req.params.artist, $options: 'i'}})
@@ -75,7 +149,6 @@ router.get('/artist/:artist', function(req, res) {
             res.status(200).send(songs);
         })
         .catch(function(err) {
-            console.log(err);
             res.status(500).send(err);
         })
     ;
@@ -107,6 +180,9 @@ var songBodyVerification = function(req, res, next) {
 };
 
 router.post('/', verifyIsAdmin, songBodyVerification, function(req, res) {
+    for(key in req.body){
+      req.body[key] = req.body[key].toLowerCase()
+    }
     SongService.create(req.body)
         .then(function(song) {
             if (req.accepts('text/html')) {
