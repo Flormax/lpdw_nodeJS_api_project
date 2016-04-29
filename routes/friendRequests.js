@@ -37,6 +37,7 @@ router.put('/accept/:id', function(req, res) {
             }
             if (req.accepts('application/json')) {
                 return res.status(200);
+                // pas de send, du coup n part en timeout ici
             }
         })
         .catch(function(err) {
@@ -53,6 +54,7 @@ router.put('/decline/:id', function(req, res) {
             }
             if (req.accepts('application/json')) {
                 return res.status(200);
+                // pas de send, du coup n part en timeout ici
             }
         })
         .catch(function(err) {

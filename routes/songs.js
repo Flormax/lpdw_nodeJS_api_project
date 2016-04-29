@@ -37,9 +37,13 @@ router.get('/search', function(req, res) {
         //Formation de la requete
         var by = req.query.by.toLowerCase()
         var filter = req.query.filter.toLowerCase().trim()
+        // alors, ici tu fais un lowercase du texte recherché, pour les chiffres, ça se passe bien, du coup la recherche
+        // par date est OK, mais par titre, artiste, etc, étant donné que tu fais une recherche exacte, la requete renvoie rien
+        // si les chansons ont des mayuscules
         switch(by) {
             case "artist":
-                var filterby = {artist: filter}
+                // pour contourner ce souci, et permettre la recherche t'aurais pu faire
+                var filterby = { artist: { $regex: filter, $options: 'i' } };
                 break;
             case "title":
                 var filterby = {title: filter}
@@ -137,6 +141,7 @@ router.get('/:id', function(req, res) {
 });
 
 router.post('/favorites/:id', function(req, res) {
+    // je vois pas l'intéret de cette route
     SongService.addFavoritesToUser(req.user_id, req.params.id)
         .then(function(song) {
             return res.render('song', {song: song});

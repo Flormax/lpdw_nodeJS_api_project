@@ -73,6 +73,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.put('/delAllFavorites', function(req, res) {
+    // on ne nomme pas les url avec des references aux operation qu'on va faire, les http method sont là pour ça
+    // une option aurait pu rester avec PUT et rajouter un querystring avec le type d'operation, remove song, ou add song
+    // car à la fin c'est un update d'une property de l'user
     UserService.deleteFavoriteFromUsers(req.user._id, req.user.favoriteSongs)
         .then(function (user) {
             if (req.accepts('text/html')) {
@@ -191,6 +194,7 @@ router.get('/search', function(req, res) {
 });
 
 router.put('/addFavorite/:id', function(req, res) {
+    // j'aurais rajouté l'id de l'user dans l'url, mais c'est bien comme ça
     UserService.addFavoriteToUsers(req.user._id, req.params.id)
         .then(function (user) {
             if (req.accepts('text/html')) {
@@ -198,6 +202,7 @@ router.put('/addFavorite/:id', function(req, res) {
             }
             if (req.accepts('application/json')) {
                 res.status(200).send(song);
+                // pas de song !!! c'est user!!!
             }
         })
         .catch(function (err) {

@@ -10,6 +10,7 @@ router.post('/', function(req, res) {
             }
             if (req.accepts('application/json')) {
                 return res.status(201).send(song);
+                // song ?? t'es censé renvoyer plutôt l'evaluation
             }
         })
         .catch(function(err) {
